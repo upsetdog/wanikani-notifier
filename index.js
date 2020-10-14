@@ -7,10 +7,6 @@ const open = require('open');
 const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
 
 function main() {
-    notifier.on('click', () => {
-        open('https://www.wanikani.com/review');
-    });
-
     setInterval(() => {
         fetch(`https://api.wanikani.com/v2/summary`, {
             method: "GET",
@@ -33,6 +29,8 @@ function main() {
                         icon: path.join(__dirname, 'wk-icon.png'),
                         sound: false,
                         wait: true,
+                    }, () => {
+                        open('https://www.wanikani.com/review');
                     });
                 }
             }).catch(err => {
