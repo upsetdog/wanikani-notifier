@@ -7,7 +7,7 @@ const open = require('open');
 const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
 
 function main() {
-    notifier.on('click', function (notifierObject, options, event) {
+    notifier.on('click', () => {
         open('https://www.wanikani.com/review');
     });
 
