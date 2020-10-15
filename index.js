@@ -3,6 +3,7 @@ const notifier = require('node-notifier');
 const fetch = require('node-fetch');
 const fs = require('fs');
 const open = require('open');
+const { UUIDv4 } = require ('uuid-v4-validator');
 
 const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
 console.log(`\x1b[44m%s\x1b[0m`, `[+] - loaded config file`);
@@ -66,6 +67,10 @@ function sendNotification(reviewCount) {
 }
 
 async function main() {
+    if (UUIDv4.validate(API_TOKEN) === false){
+    console.log(`\x1b[44m%s\x1b[0m`, `[+] - invalid API token`);
+    return;
+  };
     while (true) {
         checkAndNotify();
 
