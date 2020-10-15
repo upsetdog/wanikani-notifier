@@ -5,25 +5,28 @@ const fs = require('fs');
 const open = require('open');
 
 const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
+console.log(`\x1b[44m%s\x1b[0m`, `[+] - loaded config file`);
 
 async function checkAndNotify() {
     var reviewCount = await getReviewCount();
 
     if (reviewCount > 0) {
-        console.log(`# ${reviewCount} reviews found`);
+        console.log(`\x1b[44m%s\x1b[0m`, `[+] - # ${reviewCount} reviews found`);
         sendNotification(reviewCount);
     } else {
-        console.log(`- no reviews found`);
+        console.log(`\x1b[44m%s\x1b[0m`, `[+] - no reviews found`);
     }
 }
 
 function sleep(ms) {
+    console.log(`\x1b[44m%s\x1b[0m`, `[+] - sleeping for ${ms} ms`);
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
 }
 
 function getReviewCount() {
+    console.log(`\x1b[44m%s\x1b[0m`, `[+] - checking for reviews`);
     return new Promise((resolve, reject) => {
         fetch(`https://api.wanikani.com/v2/summary`, {
             method: "GET",
@@ -50,6 +53,7 @@ function getReviewCount() {
 }
 
 function sendNotification(reviewCount) {
+    console.log(`\x1b[44m%s\x1b[0m`, `[+] - sending notification`);
     notifier.notify({
         title: "Wanikani",
         message: `${reviewCount} reviews available!`,
