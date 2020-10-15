@@ -3,21 +3,11 @@ const notifier = require('node-notifier');
 const fetch = require('node-fetch');
 const fs = require('fs');
 const open = require('open');
-const { UUIDv4 } = require ('uuid-v4-validator');
+const { UUIDv4 } = require('uuid-v4-validator');
 
 const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
 console.log(`\x1b[44m%s\x1b[0m`, `[+] - loaded config file`);
 
-async function checkAndNotify() {
-    var reviewCount = await getReviewCount();
-
-    if (reviewCount > 0) {
-        console.log(`\x1b[44m%s\x1b[0m`, `[+] - # ${reviewCount} reviews found`);
-        sendNotification(reviewCount);
-    } else {
-        console.log(`\x1b[44m%s\x1b[0m`, `[+] - no reviews found`);
-    }
-}
 
 function sleep(ms) {
     console.log(`\x1b[44m%s\x1b[0m`, `[+] - sleeping for ${ms} ms`);
@@ -67,12 +57,20 @@ function sendNotification(reviewCount) {
 }
 
 async function main() {
-    if (UUIDv4.validate(API_TOKEN) === false){
-    console.log(`\x1b[44m%s\x1b[0m`, `[+] - invalid API token`);
-    return;
-  };
+    if (UUIDv4.validate(API_TOKEN) === false) {
+        console.log(`\x1b[44m%s\x1b[0m`, `[+] - invalid API token`);
+        return;
+    }
+
     while (true) {
-        checkAndNotify();
+        var reviewCount = await getReviewCount();
+
+        if (reviewCount > 0) {
+            console.log(`\x1b[44m%s\x1b[0m`, `[+] - # ${reviewCount} reviews found`);
+            sendNotification(reviewCount);
+        } else {
+            console.log(`\x1b[44m%s\x1b[0m`, `[+] - no reviews found`);
+        }
 
         var now = new Date();
         var then = new Date();
