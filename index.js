@@ -3,21 +3,23 @@ const notifier = require('node-notifier');
 const fetch = require('node-fetch');
 const fs = require('fs');
 const open = require('open');
+const colors = require('colors');
+
 const { UUIDv4 } = require('uuid-v4-validator');
 
 const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
-console.log(`\x1b[44m%s\x1b[0m`, `[+] - loaded config file`);
+console.log(colors.yellow(`[+] - loaded config file`));
 
 
 function sleep(ms) {
-    console.log(`\x1b[44m%s\x1b[0m`, `[+] - sleeping for ${ms} ms`);
+    console.log(colors.yellow(`[+] - sleeping for ${ms} ms`));
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
 }
 
 function getReviewCount() {
-    console.log(`\x1b[44m%s\x1b[0m`, `[+] - checking for reviews`);
+    console.log(colors.yellow(`[+] - checking for reviews`));
     return new Promise((resolve, reject) => {
         fetch(`https://api.wanikani.com/v2/summary`, {
             method: "GET",
@@ -44,7 +46,7 @@ function getReviewCount() {
 }
 
 function sendNotification(reviewCount) {
-    console.log(`\x1b[44m%s\x1b[0m`, `[+] - sending notification`);
+    console.log(colors.yellow(`[+] - sending notification`));
     notifier.notify({
         title: "Wanikani",
         message: `${reviewCount} reviews available!`,
@@ -58,7 +60,7 @@ function sendNotification(reviewCount) {
 
 async function main() {
     if (UUIDv4.validate(API_TOKEN) === false) {
-        console.log(`\x1b[44m%s\x1b[0m`, `[+] - invalid API token`);
+        console.log(colors.red(`[+] - invalid API token`));
         return;
     }
 
@@ -66,10 +68,10 @@ async function main() {
         var reviewCount = await getReviewCount();
 
         if (reviewCount > 0) {
-            console.log(`\x1b[44m%s\x1b[0m`, `[+] - # ${reviewCount} reviews found`);
+            console.log(colors.green(`[+] - # ${reviewCount} reviews found`));
             sendNotification(reviewCount);
         } else {
-            console.log(`\x1b[44m%s\x1b[0m`, `[+] - no reviews found`);
+            console.log(colors.orange(`[+] - no reviews found`));
         }
 
         var now = new Date();
