@@ -1,3 +1,5 @@
 {
-  "API_TOKEN": "YOUR TOKEN HERE"
+  "API_TOKEN": "YOUR TOKEN HERE",
+  "refreshRate": 6,
+  "playSound": true
 }
