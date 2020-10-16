@@ -8,6 +8,7 @@ const colors = require('colors');
 const { UUIDv4 } = require('uuid-v4-validator');
 
 const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
+const { refreshRate, playSound } = require("./config.json");
 console.log(colors.yellow(`[+] - loaded config file`));
 
 
@@ -51,7 +52,7 @@ function sendNotification(reviewCount) {
         title: "Wanikani",
         message: `${reviewCount} reviews available!`,
         icon: path.join(__dirname, 'wk-icon.png'),
-        sound: false,
+        sound: playSound,
         wait: true,
     }, () => {
         open('https://www.wanikani.com/review');
@@ -76,7 +77,7 @@ async function main() {
 
         var now = new Date();
         var then = new Date();
-        then.setHours(now.getHours() + 1);
+        then.setHours(now.getHours() + refreshRate);
         then.setMinutes(2, 0, 0);
 
         var waitTime = then.getTime() - now.getTime();
