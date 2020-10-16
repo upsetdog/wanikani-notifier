@@ -53,8 +53,6 @@ function sendNotification(reviewCount) {
         icon: path.join(__dirname, 'wk-icon.png'),
         sound: false,
         wait: true,
-    }, () => {
-        open('https://www.wanikani.com/review');
     });
 }
 
