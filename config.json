@@ -1,5 +1,5 @@
 {
   "API_TOKEN": "YOUR TOKEN HERE",
-  "refreshRate": 6,
-  "playSound": true
+  "refreshRate": 1,
+  "playSound": false
 }
