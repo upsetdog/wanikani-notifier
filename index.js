@@ -4,11 +4,9 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const open = require('open');
 const colors = require('colors');
-
 const { UUIDv4 } = require('uuid-v4-validator');
 
-const { API_TOKEN } = JSON.parse(fs.readFileSync('./config.json').toString());
-const { refreshRate, playSound } = require("./config.json");
+const { API_TOKEN, refreshRate, playSound } = require("./config.json");
 console.log(colors.yellow(`[+] - loaded config file`));
 
 
@@ -54,8 +52,6 @@ function sendNotification(reviewCount) {
         icon: path.join(__dirname, 'wk-icon.png'),
         sound: playSound,
         wait: true,
-    }, () => {
-        open('https://www.wanikani.com/review');
     });
 }
 
