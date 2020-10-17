@@ -6,7 +6,7 @@ const open = require('open');
 const colors = require('colors');
 const { UUIDv4 } = require('uuid-v4-validator');
 
-const { API_TOKEN, refreshRate, playSound } = require("./config.json");
+const { API_TOKEN, refreshRate, playSound, minReview } = require("./config.json");
 console.log(colors.yellow(`[+] - loaded config file`));
 
 
@@ -64,11 +64,11 @@ async function main() {
     while (true) {
         var reviewCount = await getReviewCount();
 
-        if (reviewCount > 0) {
+        if (reviewCount > minReview) {
             console.log(colors.green(`[+] - # ${reviewCount} reviews found`));
             sendNotification(reviewCount);
         } else {
-            console.log(colors.grey(`[+] - no reviews found`));
+            console.log(colors.grey(`[+] - not enough reviews found`));
         }
 
         var now = new Date();
