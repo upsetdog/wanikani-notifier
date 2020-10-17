@@ -68,7 +68,7 @@ async function main() {
             console.log(colors.green(`[+] - # ${reviewCount} reviews found`));
             sendNotification(reviewCount);
         } else {
-            console.log(colors.grey(`[+] - not enough reviews found`));
+            console.log(colors.grey(`[+] - no or not enough reviews found`));
         }
 
         var now = new Date();
