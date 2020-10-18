@@ -1,10 +1,9 @@
-const path = require('path');
-const notifier = require('node-notifier');
-const fetch = require('node-fetch');
-const fs = require('fs');
-const open = require('open');
-const colors = require('colors');
 const { UUIDv4 } = require('uuid-v4-validator');
+const notifier = require('node-notifier');
+const colors = require('colors');
+const fetch = require('node-fetch');
+const open = require('open');
+const path = require('path');
 
 const { API_TOKEN, refreshRate, playSound, minReview } = require("./config.json");
 console.log(colors.yellow(`[+] - loaded config file`));
@@ -52,6 +51,7 @@ function sendNotification(reviewCount) {
         icon: path.join(__dirname, 'wk-icon.png'),
         sound: playSound,
         wait: true,
+        actions: ['Go to reviews']
     });
 }
 
@@ -61,6 +61,10 @@ async function main() {
         return;
     }
 
+    notifier.on('Go to reviews', () => {
+        open('https://www.wanikani.com/reviews');
+    });
+
     while (true) {
         var reviewCount = await getReviewCount();
 
@@ -68,7 +72,7 @@ async function main() {
             console.log(colors.green(`[+] - # ${reviewCount} reviews found`));
             sendNotification(reviewCount);
         } else {
-            console.log(colors.grey(`[+] - no or not enough reviews found`));
+            console.log(colors.grey(`[+] - ${reviewCount == 0 ? 'no' : 'not enough'} reviews found`));
         }
 
         var now = new Date();
