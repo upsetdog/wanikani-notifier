@@ -6,8 +6,7 @@ const open = require('open');
 const path = require('path');
 
 const { API_TOKEN, refreshRate, playSound, minReview } = require("./config.json");
-console.log(colors.yellow(`[+] - loaded config file`));
-
+console.log(colors.yellow(`[*] loaded config file`));
 
 
 function formatToTimeFromMs(s) {
@@ -27,14 +26,14 @@ function formatToTimeFromMs(s) {
 }
 
 function sleep(ms) {
-    console.log(colors.yellow(`[+] - sleeping for ${formatToTimeFromMs(ms)}`));
+    console.log(colors.yellow(`[*] sleeping for ${formatToTimeFromMs(ms)}`));
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
 }
 
 function getReviewCount() {
-    console.log(colors.yellow(`[+] - checking for reviews`));
+    console.log(colors.yellow(`[*] checking for reviews`));
     return new Promise((resolve, reject) => {
         fetch(`https://api.wanikani.com/v2/summary`, {
             method: "GET",
@@ -61,7 +60,7 @@ function getReviewCount() {
 }
 
 function sendNotification(reviewCount) {
-    console.log(colors.yellow(`[+] - sending notification`));
+    console.log(colors.yellow(`[*] sending notification`));
     notifier.notify({
         title: "Wanikani",
         message: `${reviewCount} reviews available!`,
@@ -74,7 +73,7 @@ function sendNotification(reviewCount) {
 
 async function main() {
     if (UUIDv4.validate(API_TOKEN) === false) {
-        console.log(colors.red(`[+] - invalid API token`));
+        console.log(colors.red(`[-] invalid API token`));
         return;
     }
 
@@ -86,10 +85,10 @@ async function main() {
         var reviewCount = await getReviewCount();
 
         if (reviewCount > minReview) {
-            console.log(colors.green(`[+] - # ${reviewCount} reviews found`));
+            console.log(colors.green(`[+] # ${reviewCount} reviews found`));
             sendNotification(reviewCount);
         } else {
-            console.log(colors.grey(`[+] - ${reviewCount == 0 ? 'no' : 'not enough'} reviews found`));
+            console.log(colors.grey(`[!] ${reviewCount == 0 ? 'no' : 'not enough'} reviews found`));
         }
 
         var now = new Date();
