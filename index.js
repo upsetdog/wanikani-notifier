@@ -72,13 +72,13 @@ function sendNotification(reviewCount) {
 }
 
 async function main() {
-    if (UUIDv4.validate(API_TOKEN) === false) {
+    if (!UUIDv4.validate(API_TOKEN)) {
         console.log(colors.red(`[-] invalid API token`));
         return;
     }
 
-    notifier.on('Go to reviews', () => {
-        open('https://www.wanikani.com/reviews');
+    notifier.on('go to reviews', () => {
+        open('https://www.wanikani.com/review/session');
     });
 
     while (true) {
