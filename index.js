@@ -9,8 +9,25 @@ const { API_TOKEN, refreshRate, playSound, minReview } = require("./config.json"
 console.log(colors.yellow(`[+] - loaded config file`));
 
 
+
+function formatToTimeFromMs(s) {
+    function pad(n, z) {
+        z = z || 2;
+        return ('00' + n).slice(-z);
+    }
+
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+
+    return pad(hrs) + 'h ' + pad(mins) + 'm ' + pad(secs) + 's';
+}
+
 function sleep(ms) {
-    console.log(colors.yellow(`[+] - sleeping for ${ms} ms`));
+    console.log(colors.yellow(`[+] - sleeping for ${formatToTimeFromMs(ms)}`));
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
