@@ -49,21 +49,22 @@ function getReviewCount() {
 
                 if (nextReviews.getTime() - now.getTime() < 0) {
                     const count = json.data.reviews[0].subject_ids.length;
+                    const nextHour = json.data.reviews[1].subject_ids.length;
 
-                    return resolve(count);
+                    return resolve({ count, nextHour });
                 }
 
-                return resolve(0);
+                return resolve({ count: 0, nextHour: 0 });
             })
             .catch(err => reject(err));
     });
 }
 
-function sendNotification(reviewCount) {
+function sendNotification(reviewCount, str) {
     console.log(colors.yellow(`[*] sending notification`));
     notifier.notify({
         title: "Wanikani",
-        message: `${reviewCount} reviews available!`,
+        message: str,
         icon: path.join(__dirname, 'wk-icon.png'),
         sound: playSound,
         wait: true,
@@ -82,11 +83,13 @@ async function main() {
     });
 
     while (true) {
-        var reviewCount = await getReviewCount();
+        var reviews = await getReviewCount();
+        var reviewCount = reviews.count;
+        var reviewCountNextHour = reviewCount.nextHour;
 
         if (reviewCount > minReview) {
             console.log(colors.green(`[+] # ${reviewCount} reviews found`));
-            sendNotification(reviewCount);
+            sendNotification(reviewCount, `${reviewCount} reviews available${reviewCountNextHour > 0 ? ' and 10 more in an hour' : ''}`);
         } else {
             console.log(colors.grey(`[!] ${reviewCount == 0 ? 'no' : 'not enough'} reviews found`));
         }
