@@ -1,12 +1,12 @@
 # wanikani-notifier
 
-## about
+## ABOUT
 
-checks your wanikani.com user account for new reviews, and sends a desktop notification (if there are any).
+Checks your wanikani.com user account for new reviews and, if there are any, sends a desktop notification.
 
-## install
+## Install
 
 1. Clone or download the repository.
-2. Install the required packages entering 'npm install'.
+2. Install the required packages using 'npm install'.
 3. Replace "YOUR TOKEN HERE" in the config.json file with your wanikani api v2 token.
-4. Run `node index.js`
+4. Run `node index.js`.
